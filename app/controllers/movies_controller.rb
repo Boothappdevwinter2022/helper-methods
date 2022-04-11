@@ -1,12 +1,12 @@
 class MoviesController < ApplicationController
   def new
-    @the_movie = Movie.new
+    @movie = Movie.new
 
     render template: "movies/new"
   end
 
   def index
-    @list_of_movies = Movie.order(created_at: :desc)
+    @movies = Movie.order(created_at: :desc)
 
     respond_to do |format|
       format.json do
@@ -22,18 +22,18 @@ class MoviesController < ApplicationController
   def show
     # @the_movie = Movie.where(id: params.fetch(:id)).first
     # @the_movie = Movie.find_by(id: params.fetch(:id)) # this is the same as the line above
-    @the_movie = Movie.find(params.fetch(:id)) # this is the same as the line above
+    @movie = Movie.find(params.fetch(:id)) # this is the same as the line above
     
     render template: "movies/show" # technically can remove this row since template name is the same as action
   end
 
   def create
-    @the_movie = Movie.new
-    @the_movie.title = params.fetch("query_title")
-    @the_movie.description = params.fetch("query_description")
+    @movie = Movie.new
+    @movie.title = params.fetch("title")
+    @movie.description = params.fetch("description")
 
-    if @the_movie.valid?
-      @the_movie.save
+    if @movie.valid?
+      @movie.save
       redirect_to movies_url, notice: "Movie created successfully."
     else
       render template: "movies/new"
@@ -41,33 +41,28 @@ class MoviesController < ApplicationController
   end
 
   def edit
-    the_id = params.fetch(:id)
-
-    matching_movies = Movie.where(id: the_id)
-
-    @the_movie = matching_movies.first
-
+    @movie = Movie.find(params.fetch(:id))
     # render template: "movies/edit" can drop this because name is matched the action
   end
 
   def update
-    the_movie = Movie.find(params.fetch(:id))
+    movie = Movie.find(params.fetch(:id))
 
-    the_movie.title = params.fetch("query_title")
-    the_movie.description = params.fetch("query_description")
+    movie.title = params.fetch("title")
+    movie.description = params.fetch("description")
 
-    if the_movie.valid?
-      the_movie.save
-      redirect_to movie_url(the_movie), notice: "Movie updated successfully."
+    if movie.valid?
+      movie.save
+      redirect_to movie_url(movie), notice: "Movie updated successfully."
     else
-      redirect_to movie_url(the_movie), alert: "Movie failed to update successfully."
+      redirect_to movie_url(movie), alert: "Movie failed to update successfully."
     end
   end
 
   def destroy
-    the_movie = Movie.find(params.fetch(:id))
+    movie = Movie.find(params.fetch(:id))
 
-    the_movie.destroy
+    movie.destroy
 
     redirect_to movies_url, notice: "Movie deleted successfully."
   end
