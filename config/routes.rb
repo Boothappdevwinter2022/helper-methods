@@ -19,5 +19,6 @@ Rails.application.routes.draw do
   # DELETE
   delete "/movies/:id" => "movies#destroy"
 
+  resources :directors
   #------------------------------
 end
