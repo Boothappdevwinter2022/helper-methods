@@ -4,7 +4,26 @@
   <p style="color: red;"><%= message %></p>
 <% end %>
 
-<%= form_with(url: movies_path) do %>
+<!--- 
+This is a method to create form to create or update a database record. 
+Can only use model here if we name our routes RESTfully 
+--->
+<%= form_with(model: @movie) do |form| %> 
+  <div>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description, rows: 3 %>
+  </div>
+
+<%= form.button %> <!--- can skip "Create Movie" here because Rails can automatically do that --->
+<% end %>
+
+<!--- This is the old code before we used model method instead
+<%= form_with(utl: @movie_path) do |form| %>
   <div>
     <%= label_tag :title %>
     <%= text_field_tag "movie[title]", @movie.title %>
@@ -17,3 +36,4 @@
 
 <%= button_tag "Create movie" %>
 <% end %>
+--->

@@ -28,9 +28,10 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.new
-    @movie.title = params.fetch(:movie).fetch(:title)
-    @movie.description = params.fetch(:movie).fetch(:description)
+    movie_attributes = params.require(:movie).permit(:title, :description) #whitelist title and description columns. Replace fetch.
+    @movie = Movie.new(movie_attributes) # this code replace the two lines of code below it because we have .new method receiving a Hash
+    # @movie.title = params.fetch(:movie).fetch(:title)
+    # @movie.description = params.fetch(:movie).fetch(:description)
 
     if @movie.valid?
       @movie.save
